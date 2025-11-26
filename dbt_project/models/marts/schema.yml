@@ -1,0 +1,32 @@
+version: 2
+models:
+  - name: mart_daily_state_metrics
+    description: "Дневные метрики по штатам"
+    columns:
+      - name: transaction_date
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY', 'DC']
+      - name: total_amount
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+
+  - name: mart_fraud_by_category
+    description: "Фрод по категориям"
+    columns:
+      - name: category
+        tests:
+          - unique
+          - not_null
+      - name: fraud_rate_percent
+        tests:
+           - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 100

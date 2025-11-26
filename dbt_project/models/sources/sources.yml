@@ -1,0 +1,6 @@
+version: 2
+sources:
+  - name: transactions_source
+    database: default
+    tables:
+      - name: transactions
